@@ -1,6 +1,7 @@
 package sai.ecommerce.domain;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,9 +33,9 @@ public class User {
 
   @Column(name = "created_at")
   @CreationTimestamp
-  private Date createdAt;
+  private LocalDateTime createdAt;
 
   @Column(name = "updated_at")
   @UpdateTimestamp
-  private Date updatedAt;
+  private LocalDateTime updatedAt;
 }
