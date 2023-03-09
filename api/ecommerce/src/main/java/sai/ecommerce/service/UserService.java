@@ -25,8 +25,8 @@ public class UserService {
   private final JwtService jwtService;
   private final AuthenticationManager authenticationManager;
 
-  public static final String USER_REGISTRATION_SUCCESS = "User registered in successfully";
-  public static final String DUPLICATE_EMAIL = "User exits with provided email";
+  private static final String USER_REGISTRATION_SUCCESS = "User registered in successfully";
+  private static final String DUPLICATE_EMAIL = "User exits with provided email";
 
   @Transactional
   public SignupResponse registerUser(SignupRequest signupRequest) {

@@ -2,7 +2,6 @@ package sai.ecommerce.domain;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Collections;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +16,6 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 @Data
@@ -55,13 +53,9 @@ public class User implements UserDetails {
   @UpdateTimestamp
   private LocalDateTime updatedAt;
 
-  public enum UserRole {
-    USER
-  }
-
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Collections.singletonList(new SimpleGrantedAuthority(UserRole.USER.toString()));
+    return null;
   }
 
   @Override
