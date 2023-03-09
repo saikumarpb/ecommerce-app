@@ -19,7 +19,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import sai.ecommerce.utils.Constants;
 
 @Data
 @Entity
@@ -33,7 +32,7 @@ public class User implements UserDetails {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(name = "id", unique = true, nullable = false)
-  private Long id;
+  private int id;
 
   @NotBlank
   @Size(max = 100)
@@ -56,9 +55,13 @@ public class User implements UserDetails {
   @UpdateTimestamp
   private LocalDateTime updatedAt;
 
+  public enum UserRole {
+    USER
+  }
+
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return Collections.singletonList(new SimpleGrantedAuthority(Constants.ROLE_USER));
+    return Collections.singletonList(new SimpleGrantedAuthority(UserRole.USER.toString()));
   }
 
   @Override

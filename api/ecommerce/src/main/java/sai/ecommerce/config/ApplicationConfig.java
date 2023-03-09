@@ -23,7 +23,7 @@ public class ApplicationConfig {
     return username ->
         repository
             .findByEmail(username)
-            .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            .orElseThrow(() -> new UsernameNotFoundException("Invalid login credentials."));
   }
 
   @Bean

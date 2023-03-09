@@ -9,8 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,12 +22,11 @@ import sai.ecommerce.exception.UnauthorizedException;
 import sai.ecommerce.service.JwtService;
 
 @Component
+@Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
   private final JwtService jwtService;
   private final UserDetailsService userDetailsService;
-
-  private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
   @Override
   protected void doFilterInternal(
@@ -65,7 +63,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   private String parseJwt(HttpServletRequest request) {
     String authHeader = request.getHeader(AUTHORIZATION);
     if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
-      return authHeader.substring(7, authHeader.length());
+      return authHeader.substring(7);
     }
     return null;
   }

@@ -3,12 +3,11 @@ package sai.ecommerce.controller;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import sai.ecommerce.model.LoginRequest;
 import sai.ecommerce.model.LoginResponse;
-import sai.ecommerce.model.MessageResponse;
 import sai.ecommerce.model.SignupRequest;
+import sai.ecommerce.model.SignupResponse;
 import sai.ecommerce.service.UserService;
 
 @RestController
@@ -18,15 +17,12 @@ public class AuthController {
   private final UserService userService;
 
   @PostMapping("/signup")
-  public ResponseEntity<MessageResponse> registerUser(
-      @Valid @RequestBody SignupRequest signupRequest) {
+  public SignupResponse signup(@Valid @RequestBody SignupRequest signupRequest) {
     return userService.registerUser(signupRequest);
   }
 
   @PostMapping("/login")
-  public ResponseEntity<LoginResponse> authenticateUser(
-      @Valid @RequestBody LoginRequest loginRequest) {
-    LoginResponse loginResponse = userService.authenticateUser(loginRequest);
-    return ResponseEntity.ok().body(loginResponse);
+  public LoginResponse login(@Valid @RequestBody LoginRequest loginRequest) {
+    return userService.authenticateUser(loginRequest);
   }
 }
