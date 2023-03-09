@@ -9,7 +9,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import sai.ecommerce.domain.User;
 import sai.ecommerce.exception.BadRequestException;
 import sai.ecommerce.model.LoginRequest;
@@ -28,7 +27,6 @@ public class UserService {
   private static final String USER_REGISTRATION_SUCCESS = "User registered in successfully";
   private static final String DUPLICATE_EMAIL = "User exits with provided email";
 
-  @Transactional
   public SignupResponse registerUser(SignupRequest signupRequest) {
     Optional<User> optionalUser = userRepository.findByEmail(signupRequest.getEmail());
     if (optionalUser.isPresent()) {
