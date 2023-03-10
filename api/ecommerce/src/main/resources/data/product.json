@@ -1,0 +1,34 @@
+[
+  {
+    "name": "Organic Avocado",
+    "categoryId": 1,
+    "price": 2.99,
+    "stock": 50,
+    "image": "https://example.com/avocado.jpg",
+    "description": "Fresh and ripe organic avocado from local farms."
+  },
+  {
+    "name": "Wireless Earbuds",
+    "categoryId": 2,
+    "price": 49.99,
+    "stock": 20,
+    "image": "https://example.com/earbuds.jpg",
+    "description": "Bluetooth 5.0 wireless earbuds with noise-cancellation and touch controls."
+  },
+  {
+    "name": "Organic Granola",
+    "categoryId": 3,
+    "price": 7.99,
+    "stock": 100,
+    "image": "https://example.com/granola.jpg",
+    "description": "Handmade organic granola with rolled oats, nuts, and dried fruits."
+  },
+  {
+    "name": "Smartwatch",
+    "categoryId": 2,
+    "price": 199.99,
+    "stock": 10,
+    "image": "https://example.com/smartwatch.jpg",
+    "description": "Fitness tracker smartwatch with heart rate monitor, GPS, and smartphone integration."
+  }
+]
