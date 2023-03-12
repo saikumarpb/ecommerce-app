@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "name": "Andhra Pradesh",
+    "countryId": 1
+  },
+  {
+    "id": 2,
+    "name": "California",
+    "countryId": 2
+  },
+  {
+    "id": 3,
+    "name": "Beijing",
+    "countryId": 3
+  },
+  {
+    "id": 4,
+    "name": "Sao Paulo",
+    "countryId": 4
+  },
+  {
+    "id": 5,
+    "name": "Moscow",
+    "countryId": 5
+  },
+  {
+    "id": 6,
+    "name": "Karnataka",
+    "countryId": 1
+  },
+  {
+    "id": 7,
+    "name": "Kerala",
+    "countryId": 1
+  },
+  {
+    "id": 8,
+    "name": "Maharashtra",
+    "countryId": 1
+  },
+  {
+    "id": 9,
+    "name": "Tamil Nadu",
+    "countryId": 1
+  },
+  {
+    "id": 10,
+    "name": "Uttar Pradesh",
+    "countryId": 1
+  },
+  {
+    "id": 11,
+    "name": "West Bengal",
+    "countryId": 1
+  },
+  {
+    "id": 12,
+    "name": "Gujarat",
+    "countryId": 1
+  },
+  {
+    "id": 13,
+    "name": "New York",
+    "countryId": 2
+  },
+  {
+    "id": 14,
+    "name": "Texas",
+    "countryId": 2
+  }
+]
