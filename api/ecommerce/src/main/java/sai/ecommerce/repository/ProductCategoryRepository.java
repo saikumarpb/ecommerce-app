@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import sai.ecommerce.domain.ProductCategory;
 
 public interface ProductCategoryRepository extends JpaRepository<ProductCategory, Integer> {
-  Optional<ProductCategory> findByName(String name);
+  Optional<ProductCategory> findById(int id);
 }

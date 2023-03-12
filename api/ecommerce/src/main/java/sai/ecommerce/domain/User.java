@@ -1,24 +1,26 @@
 package sai.ecommerce.domain;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(
     name = "user",
@@ -26,10 +28,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Builder
 @AllArgsConstructor
 @RequiredArgsConstructor
-public class User implements UserDetails {
+public class User extends BaseEntity implements UserDetails {
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "id", unique = true, nullable = false)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
 
   @NotBlank
@@ -45,40 +46,38 @@ public class User implements UserDetails {
   @Size(max = 120)
   private String password;
 
-  @Column(name = "created_at", nullable = false)
-  @CreationTimestamp
-  private LocalDateTime createdAt;
-
-  @Column(name = "updated_at", nullable = false)
-  @UpdateTimestamp
-  private LocalDateTime updatedAt;
-
   @Override
+  @Transient
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return null;
   }
 
   @Override
+  @Transient
   public String getUsername() {
     return this.getEmail();
   }
 
   @Override
+  @Transient
   public boolean isAccountNonExpired() {
     return true;
   }
 
   @Override
+  @Transient
   public boolean isAccountNonLocked() {
     return true;
   }
 
   @Override
+  @Transient
   public boolean isCredentialsNonExpired() {
     return true;
   }
 
   @Override
+  @Transient
   public boolean isEnabled() {
     return isAccountNonLocked();
   }

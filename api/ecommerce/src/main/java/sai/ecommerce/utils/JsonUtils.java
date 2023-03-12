@@ -3,9 +3,11 @@ package sai.ecommerce.utils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class JsonUtils {
   public static <T> T json2Object(String fileName, Class<T> classType) {
 
@@ -17,7 +19,7 @@ public class JsonUtils {
       mapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
       t = mapper.readValue(file, classType);
     } catch (Exception e) {
-      e.printStackTrace();
+      log.error(e.getMessage(), e);
     }
     return t;
   }

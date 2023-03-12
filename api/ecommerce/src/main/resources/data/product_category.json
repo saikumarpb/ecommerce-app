@@ -1,17 +1,21 @@
 [
   {
+    "id": 1,
     "name": "Produce",
     "description": "Fresh fruits and vegetables from local farms and plantations."
   },
   {
+    "id": 2,
     "name": "Electronics",
     "description": "Consumer electronics and gadgets."
   },
   {
+    "id": 3,
     "name": "Snacks",
     "description": "Healthy and delicious snacks for any time of day."
   },
   {
+    "id": 4,
     "name": "Furniture",
     "description": "Wodden and Iron Furniture"
   }

@@ -1,26 +1,26 @@
 package sai.ecommerce.domain;
 
 import java.util.List;
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
-import lombok.Data;
-import lombok.RequiredArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
 @Entity
-@Table(
-    name = "product_category",
-    uniqueConstraints = {@UniqueConstraint(columnNames = "name")})
-@RequiredArgsConstructor
-public class ProductCategory {
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(name = "id", unique = true, nullable = false)
-  private int id;
+@Getter
+@Setter
+@Table(name = "product_category")
+public class ProductCategory extends BaseEntity {
+  @Id private int id;
 
   @NotBlank private String name;
 
-  private String description;
+  @NotBlank private String description;
 
   @OneToMany(mappedBy = "category", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   private List<Product> products;
