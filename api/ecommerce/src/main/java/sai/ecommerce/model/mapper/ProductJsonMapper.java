@@ -9,7 +9,6 @@ public class ProductJsonMapper {
   private int id;
   private String name;
   private String description;
-  private int categoryId;
   private double price;
   private int stock;
   private String image;

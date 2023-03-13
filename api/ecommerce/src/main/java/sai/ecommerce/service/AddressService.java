@@ -1,7 +1,5 @@
 package sai.ecommerce.service;
 
-import java.util.NoSuchElementException;
-import java.util.Optional;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +17,7 @@ import sai.ecommerce.utils.JsonUtils;
 @Slf4j
 @RequiredArgsConstructor
 public class AddressService {
-  String COUNTRY_DATA_PATH = "data/country.json";
-  String STATE_DATA_PATH = "data/state.json";
+  String COUNTRY_FILE_PATH = "data/country.json";
 
   private final CountryRepository countryRepository;
   private final StateRepository stateRepository;
@@ -31,41 +28,39 @@ public class AddressService {
   @PostConstruct
   private void loadCountriesToDatabase() {
     if (loadCountries) {
-      log.info(String.format("Reading file at : %s", COUNTRY_DATA_PATH));
+      log.info("Reading file at : {}", COUNTRY_FILE_PATH);
       CountryJsonMapper[] countries =
-          JsonUtils.json2Object(COUNTRY_DATA_PATH, CountryJsonMapper[].class);
+          JsonUtils.json2Object(COUNTRY_FILE_PATH, CountryJsonMapper[].class);
 
-      for (CountryJsonMapper country : countries) {
-        log.info(String.format("Saving country : %s", country.getName()));
-        saveCountry(country);
-      }
+      for (CountryJsonMapper countryJson : countries) {
+        log.info("Saving country : {}", countryJson.getName());
+        Country country = saveCountry(countryJson);
 
-      log.info(String.format("Reading file at : %s", STATE_DATA_PATH));
-      StateJsonMapper[] states = JsonUtils.json2Object(STATE_DATA_PATH, StateJsonMapper[].class);
-
-      for (StateJsonMapper state : states) {
-        log.info(String.format("Saving state : %s", state.getName()));
-        saveState(state);
+        for (StateJsonMapper stateJson : countryJson.getStates()) {
+          log.info("Saving state : %s", stateJson.getName());
+          saveState(stateJson, country);
+        }
       }
     }
   }
 
-  private void saveCountry(CountryJsonMapper saveCountry) {
-    Country country = countryRepository.findById(saveCountry.getId()).orElse(new Country());
-    country.setId(saveCountry.getId());
-    country.setName(saveCountry.getName());
+  private Country saveCountry(CountryJsonMapper countryJson) {
+    Country country = countryRepository.findById(countryJson.getId()).orElse(new Country());
+
+    country.setId(countryJson.getId());
+    country.setName(countryJson.getName());
+
     countryRepository.save(country);
+    return country;
   }
 
-  private void saveState(StateJsonMapper saveState) {
-    State state = stateRepository.findById(saveState.getId()).orElse(new State());
-    Optional<Country> country = countryRepository.findById(saveState.getCountryId());
-    if (!country.isPresent()) {
-      throw new NoSuchElementException("Country not found");
-    }
-    state.setId(saveState.getId());
-    state.setName(saveState.getName());
-    state.setCountry(country.get());
+  private void saveState(StateJsonMapper stateJson, Country country) {
+    State state = stateRepository.findById(stateJson.getId()).orElse(new State());
+
+    state.setId(stateJson.getId());
+    state.setName(stateJson.getName());
+    state.setCountry(country);
+
     stateRepository.save(state);
   }
 }

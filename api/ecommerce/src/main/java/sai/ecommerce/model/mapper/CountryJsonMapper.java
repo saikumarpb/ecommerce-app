@@ -8,4 +8,5 @@ import lombok.Setter;
 public class CountryJsonMapper {
   private int id;
   private String name;
+  private StateJsonMapper[] states;
 }

@@ -1,38 +1,139 @@
 [
   {
     "id": 1,
-    "name": "Organic Avocadocad",
-    "categoryId": 1,
-    "price": 2.99,
-    "stock": 50,
-    "image": "https://example.com/avocado.jpg",
-    "description": "Fresh and ripe organic avocado from local farms."
+    "name": "Produce",
+    "description": "Fresh fruits and vegetables from local farms and plantations.",
+    "products": [
+      {
+        "id": 1,
+        "name": "Organic Avocadocad",
+        "price": 2.99,
+        "stock": 50,
+        "image": "https://example.com/avocado.jpg",
+        "description": "Fresh and ripe organic avocado from local farms."
+      }
+    ]
   },
   {
     "id": 2,
-    "name": "Wireless Earbuds",
-    "categoryId": 2,
-    "price": 49.99,
-    "stock": 20,
-    "image": "https://example.com/earbuds.jpg",
-    "description": "Bluetooth 5.0 wireless earbuds with noise-cancellation and touch controls."
+    "name": "Electronics",
+    "description": "Consumer electronics and gadgets.",
+    "products": [
+      {
+        "id": 2,
+        "name": "Wireless Earbuds",
+        "categoryId": 2,
+        "price": 49.99,
+        "stock": 20,
+        "image": "https://example.com/earbuds.jpg",
+        "description": "Bluetooth 5.0 wireless earbuds with noise-cancellation and touch controls."
+      },
+      {
+        "id": 3,
+        "name": "Smartwatch",
+        "categoryId": 2,
+        "price": 199.99,
+        "stock": 10,
+        "image": "https://example.com/smartwatch.jpg",
+        "description": "Fitness tracker smartwatch with heart rate monitor, GPS, and smartphone integration."
+      }
+    ]
   },
   {
     "id": 3,
-    "name": "Organic Granola",
-    "categoryId": 3,
-    "price": 7.99,
-    "stock": 100,
-    "image": "https://example.com/granola.jpg",
-    "description": "Handmade organic granola with rolled oats, nuts, and dried fruits."
+    "name": "Snacks",
+    "description": "Healthy and delicious snacks for any time of day.",
+    "products": [
+      {
+        "id": 4,
+        "name": "Organic Granola",
+        "categoryId": 3,
+        "price": 7.99,
+        "stock": 100,
+        "image": "https://example.com/granola.jpg",
+        "description": "Handmade organic granola with rolled oats, nuts, and dried fruits."
+      }
+    ]
   },
   {
     "id": 4,
-    "name": "Smartwatch",
-    "categoryId": 2,
-    "price": 199.99,
-    "stock": 10,
-    "image": "https://example.com/smartwatch.jpg",
-    "description": "Fitness tracker smartwatch with heart rate monitor, GPS, and smartphone integration."
+    "name": "Furniture",
+    "description": "Wodden and Iron Furniture",
+    "products": []
+  },
+  {
+    "id": 5,
+    "name": "Clothing",
+    "description": "Fashionable and comfortable clothing for all seasons.",
+    "products": [
+      {
+        "id": 5,
+        "name": "Men's Hoodie",
+        "categoryId": 5,
+        "price": 29.99,
+        "stock": 30,
+        "image": "https://example.com/hoodie.jpg",
+        "description": "Soft and warm hoodie for men, available in different colors and sizes."
+      },
+      {
+        "id": 6,
+        "name": "Women's Dress",
+        "categoryId": 5,
+        "price": 49.99,
+        "stock": 20,
+        "image": "https://example.com/dress.jpg",
+        "description": "Elegant and comfortable dress for women, suitable for any occasion."
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "name": "Home Appliances",
+    "description": "Essential appliances for a modern home.",
+    "products": [
+      {
+        "id": 7,
+        "name": "Coffee Maker",
+        "categoryId": 6,
+        "price": 99.99,
+        "stock": 15,
+        "image": "https://example.com/coffee-maker.jpg",
+        "description": "Programmable coffee maker with multiple brewing options and auto shut-off feature."
+      },
+      {
+        "id": 8,
+        "name": "Air Purifier",
+        "categoryId": 6,
+        "price": 149.99,
+        "stock": 10,
+        "image": "https://example.com/air-purifier.jpg",
+        "description": "High-efficiency air purifier with HEPA filter and smart sensors for real-time air quality monitoring."
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "name": "Sports Equipment",
+    "description": "Gear and equipment for sports and outdoor activities.",
+    "products": [
+      {
+        "id": 9,
+        "name": "Yoga Mat",
+        "categoryId": 7,
+        "price": 19.99,
+        "stock": 50,
+        "image": "https://example.com/yoga-mat.jpg",
+        "description": "Non-slip yoga mat with high-density foam for comfortable and safe yoga practice."
+      },
+      {
+        "id": 10,
+        "name": "Camping Tent",
+        "categoryId": 7,
+        "price": 149.99,
+        "stock": 5,
+        "image": "https://example.com/tent.jpg",
+        "description": "Spacious and durable camping tent for up to 6 people, with waterproof rainfly and mesh windows for ventilation."
+      }
+    ]
   }
 ]
