@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -47,37 +46,31 @@ public class User extends BaseEntity implements UserDetails {
   private String password;
 
   @Override
-  @Transient
   public Collection<? extends GrantedAuthority> getAuthorities() {
     return null;
   }
 
   @Override
-  @Transient
   public String getUsername() {
     return this.getEmail();
   }
 
   @Override
-  @Transient
   public boolean isAccountNonExpired() {
     return true;
   }
 
   @Override
-  @Transient
   public boolean isAccountNonLocked() {
     return true;
   }
 
   @Override
-  @Transient
   public boolean isCredentialsNonExpired() {
     return true;
   }
 
   @Override
-  @Transient
   public boolean isEnabled() {
     return isAccountNonLocked();
   }
