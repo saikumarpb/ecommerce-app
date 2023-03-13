@@ -1,0 +1,64 @@
+[
+  {
+    "id": 1,
+    "name": "India",
+    "states": [
+      {
+        "id": 1,
+        "name": "Andhra Pradesh"
+      },
+      {
+        "id": 2,
+        "name": "Tamil Nadu"
+      },
+      {
+        "id": 3,
+        "name": "Karnataka"
+      },
+      {
+        "id": 4,
+        "name": "Kerala"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "United States",
+    "states": [
+      {
+        "id": 5,
+        "name": "California"
+      },
+      {
+        "id": 6,
+        "name": "Texas"
+      },
+      {
+        "id": 7,
+        "name": "Florida"
+      },
+      {
+        "id": 8,
+        "name": "New York"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "name": "Australia",
+    "states": [
+      {
+        "id": 9,
+        "name": "New South Wales"
+      },
+      {
+        "id": 10,
+        "name": "Queensland"
+      },
+      {
+        "id": 11,
+        "name": "Victoria"
+      }
+    ]
+  }
+]
