@@ -16,16 +16,16 @@ import sai.ecommerce.utils.JsonUtils;
 @Slf4j
 @RequiredArgsConstructor
 public class AddressService {
-  String COUNTRY_FILE_PATH = "data/country.json";
+  String COUNTRIES_AND_STATES_FILE_PATH = "data/countries_and_states.json";
 
   private final CountryRepository countryRepository;
   private final StateRepository stateRepository;
 
   @PostConstruct
   private void loadCountriesToDatabase() {
-    log.info("Reading file at : {}", COUNTRY_FILE_PATH);
+    log.info("Reading file at : {}", COUNTRIES_AND_STATES_FILE_PATH);
     CountryJsonMapper[] countries =
-        JsonUtils.json2Object(COUNTRY_FILE_PATH, CountryJsonMapper[].class);
+        JsonUtils.json2Object(COUNTRIES_AND_STATES_FILE_PATH, CountryJsonMapper[].class);
 
     for (CountryJsonMapper countryJson : countries) {
       log.info("Saving country : {}", countryJson.getName());
