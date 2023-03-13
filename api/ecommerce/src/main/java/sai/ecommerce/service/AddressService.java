@@ -5,6 +5,7 @@ import java.util.Optional;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import sai.ecommerce.domain.Country;
 import sai.ecommerce.domain.State;
@@ -24,23 +25,28 @@ public class AddressService {
   private final CountryRepository countryRepository;
   private final StateRepository stateRepository;
 
+  @Value("${load.countries-json}")
+  private boolean loadCountries;
+
   @PostConstruct
   private void loadCountriesToDatabase() {
-    log.info(String.format("Reading file at : %s", COUNTRY_DATA_PATH));
-    CountryJsonMapper[] countries =
-        JsonUtils.json2Object(COUNTRY_DATA_PATH, CountryJsonMapper[].class);
+    if (loadCountries) {
+      log.info(String.format("Reading file at : %s", COUNTRY_DATA_PATH));
+      CountryJsonMapper[] countries =
+          JsonUtils.json2Object(COUNTRY_DATA_PATH, CountryJsonMapper[].class);
 
-    for (CountryJsonMapper country : countries) {
-      log.info(String.format("Saving country : %s", country.getName()));
-      saveCountry(country);
-    }
+      for (CountryJsonMapper country : countries) {
+        log.info(String.format("Saving country : %s", country.getName()));
+        saveCountry(country);
+      }
 
-    log.info(String.format("Reading file at : %s", STATE_DATA_PATH));
-    StateJsonMapper[] states = JsonUtils.json2Object(STATE_DATA_PATH, StateJsonMapper[].class);
+      log.info(String.format("Reading file at : %s", STATE_DATA_PATH));
+      StateJsonMapper[] states = JsonUtils.json2Object(STATE_DATA_PATH, StateJsonMapper[].class);
 
-    for (StateJsonMapper state : states) {
-      log.info(String.format("Saving state : %s", state.getName()));
-      saveState(state);
+      for (StateJsonMapper state : states) {
+        log.info(String.format("Saving state : %s", state.getName()));
+        saveState(state);
+      }
     }
   }
 
