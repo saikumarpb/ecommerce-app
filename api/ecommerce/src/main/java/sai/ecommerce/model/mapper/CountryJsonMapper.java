@@ -5,11 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductJsonMapper {
+public class CountryJsonMapper {
   private int id;
   private String name;
-  private String description;
-  private double price;
-  private int stock;
-  private String image;
+  private StateJsonMapper[] states;
 }

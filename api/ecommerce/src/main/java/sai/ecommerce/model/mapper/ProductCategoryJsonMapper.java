@@ -9,4 +9,5 @@ public class ProductCategoryJsonMapper {
   private int id;
   private String name;
   private String description;
+  private ProductJsonMapper[] products;
 }
