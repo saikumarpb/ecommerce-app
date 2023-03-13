@@ -22,52 +22,54 @@ public class ProductService {
   private final ProductCategoryRepository productCategoryRepository;
   private final ProductRepository productRepository;
 
-  String PRODUCT_CATEGORY_DATA_PATH = "data/product_category.json";
-  String PRODUCT_DATA_PATH = "data/product.json";
+  String PRODUCT_CATEGORY_FILE_PATH = "data/product_category.json";
+  String PRODUCT_FILE_PATH = "data/product.json";
 
   @PostConstruct
   private void loadProductsToDatabase() {
-    log.info(String.format("Reading file at : %s", PRODUCT_CATEGORY_DATA_PATH));
+    log.info("Reading file at : {}", PRODUCT_CATEGORY_FILE_PATH);
     ProductCategoryJsonMapper[] productCategories =
-        JsonUtils.json2Object(PRODUCT_CATEGORY_DATA_PATH, ProductCategoryJsonMapper[].class);
+        JsonUtils.json2Object(PRODUCT_CATEGORY_FILE_PATH, ProductCategoryJsonMapper[].class);
 
     for (ProductCategoryJsonMapper category : productCategories) {
-      log.info(String.format("Saving Product category : %s", category.getName()));
+      log.info("Saving Product category : {}", category.getName());
       saveProductCategory(category);
     }
 
-    log.info(String.format("Reading file at : %s", PRODUCT_DATA_PATH));
+    log.info("Reading file at : {}", PRODUCT_FILE_PATH);
     ProductJsonMapper[] products =
-        JsonUtils.json2Object(PRODUCT_DATA_PATH, ProductJsonMapper[].class);
+        JsonUtils.json2Object(PRODUCT_FILE_PATH, ProductJsonMapper[].class);
     for (ProductJsonMapper product : products) {
-      log.info(String.format("Saving Product : %s", product.getName()));
+      log.info("Saving Product : {}", product.getName());
       saveProduct(product);
     }
   }
 
-  private void saveProductCategory(ProductCategoryJsonMapper saveCategory) {
+  private void saveProductCategory(ProductCategoryJsonMapper productCategoryJson) {
     ProductCategory category =
-        productCategoryRepository.findById(saveCategory.getId()).orElse(new ProductCategory());
-    category.setId(saveCategory.getId());
-    category.setName(saveCategory.getName());
-    category.setDescription(saveCategory.getDescription());
+        productCategoryRepository
+            .findById(productCategoryJson.getId())
+            .orElse(new ProductCategory());
+    category.setId(productCategoryJson.getId());
+    category.setName(productCategoryJson.getName());
+    category.setDescription(productCategoryJson.getDescription());
     productCategoryRepository.save(category);
   }
 
-  private void saveProduct(ProductJsonMapper saveProduct) throws NoSuchElementException {
-    Product product = productRepository.findById(saveProduct.getId()).orElse(new Product());
+  private void saveProduct(ProductJsonMapper productJson) throws NoSuchElementException {
+    Product product = productRepository.findById(productJson.getId()).orElse(new Product());
     Optional<ProductCategory> productcategory =
-        productCategoryRepository.findById(saveProduct.getCategoryId());
+        productCategoryRepository.findById(productJson.getCategoryId());
     if (!productcategory.isPresent()) {
-      throw new NoSuchElementException("Category not found");
+      throw new NoSuchElementException("Product category not found");
     }
-    product.setId(saveProduct.getId());
-    product.setName(saveProduct.getName());
+    product.setId(productJson.getId());
+    product.setName(productJson.getName());
     product.setCategory(productcategory.get());
-    product.setDescription(saveProduct.getDescription());
-    product.setPrice(saveProduct.getPrice());
-    product.setImage(saveProduct.getImage());
-    product.setStock(saveProduct.getStock());
+    product.setDescription(productJson.getDescription());
+    product.setPrice(productJson.getPrice());
+    product.setImage(productJson.getImage());
+    product.setStock(productJson.getStock());
     productRepository.save(product);
   }
 }
