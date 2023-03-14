@@ -1,5 +1,7 @@
 package sai.ecommerce.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.NoSuchElementException;
 import javax.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import sai.ecommerce.domain.Product;
 import sai.ecommerce.domain.ProductCategory;
+import sai.ecommerce.exception.BadRequestException;
+import sai.ecommerce.model.mapper.ProductCategoryJsonFileMapper;
 import sai.ecommerce.model.mapper.ProductCategoryJsonMapper;
 import sai.ecommerce.model.mapper.ProductJsonMapper;
 import sai.ecommerce.repository.ProductCategoryRepository;
@@ -27,14 +31,103 @@ public class ProductService {
   @Value("${load.products-json}")
   private boolean loadProducts;
 
+  public List<ProductJsonMapper> getAllProducts() {
+    List<Product> products = productRepository.findAll();
+    return mapProductsToProductJson(products);
+  }
+
+  public ProductJsonMapper getProductById(int id) {
+    Product product =
+        productRepository
+            .findById(id)
+            .orElseThrow(() -> new BadRequestException("Product not found"));
+
+    return mapProductToProductJson(product);
+  }
+
+  public List<ProductJsonMapper> getProductsByCategory(int id) {
+    ProductCategory productCategory =
+        productCategoryRepository
+            .findById(id)
+            .orElseThrow(() -> new BadRequestException("Product category not found"));
+
+    List<Product> products = productCategory.getProducts();
+    return mapProductsToProductJson(products);
+  }
+
+  public List<ProductCategoryJsonFileMapper> getAllProductsByCategory() {
+    List<ProductCategory> productCategories = productCategoryRepository.findAll();
+    return mapProductCategoriesToJsonFile(productCategories);
+  }
+
+  public List<ProductCategoryJsonMapper> getAllCategories() {
+    List<ProductCategory> productCategories = productCategoryRepository.findAll();
+    return mapProductCategoriesToJson(productCategories);
+  }
+
+  private List<ProductJsonMapper> mapProductsToProductJson(List<Product> products) {
+    List<ProductJsonMapper> productsJson = new ArrayList<>();
+
+    for (Product product : products) {
+      ProductJsonMapper productJson = mapProductToProductJson(product);
+      productsJson.add(productJson);
+    }
+
+    return productsJson;
+  }
+
+  private List<ProductCategoryJsonMapper> mapProductCategoriesToJson(
+      List<ProductCategory> productCategories) {
+    List<ProductCategoryJsonMapper> productCategoryJsonList = new ArrayList<>();
+
+    for (ProductCategory productCategory : productCategories) {
+      ProductCategoryJsonMapper productCategoryJson =
+          new ProductCategoryJsonMapper(
+              productCategory.getId(), productCategory.getName(), productCategory.getDescription());
+      productCategoryJsonList.add(productCategoryJson);
+    }
+
+    return productCategoryJsonList;
+  }
+
+  private List<ProductCategoryJsonFileMapper> mapProductCategoriesToJsonFile(
+      List<ProductCategory> productCategories) {
+    List<ProductCategoryJsonFileMapper> productCategoryJsonList = new ArrayList<>();
+
+    for (ProductCategory productCategory : productCategories) {
+      List<Product> products = productCategory.getProducts();
+
+      ProductCategoryJsonFileMapper productCategoryJson =
+          new ProductCategoryJsonFileMapper(
+              productCategory.getId(),
+              productCategory.getName(),
+              productCategory.getDescription(),
+              mapProductsToProductJson(products));
+
+      productCategoryJsonList.add(productCategoryJson);
+    }
+
+    return productCategoryJsonList;
+  }
+
+  public ProductJsonMapper mapProductToProductJson(Product product) {
+    return new ProductJsonMapper(
+        product.getId(),
+        product.getName(),
+        product.getDescription(),
+        product.getPrice(),
+        product.getStock(),
+        product.getImage());
+  }
+
   @PostConstruct
   private void loadProductsToDatabase() {
     if (loadProducts) {
       log.info("Reading file at : {}", PRODUCT_FILE_PATH);
-      ProductCategoryJsonMapper[] productCategories =
-          JsonUtils.json2Object(PRODUCT_FILE_PATH, ProductCategoryJsonMapper[].class);
+      ProductCategoryJsonFileMapper[] productCategories =
+          JsonUtils.json2Object(PRODUCT_FILE_PATH, ProductCategoryJsonFileMapper[].class);
 
-      for (ProductCategoryJsonMapper categoryJson : productCategories) {
+      for (ProductCategoryJsonFileMapper categoryJson : productCategories) {
         log.info("Saving Product category : {}", categoryJson.getName());
         ProductCategory productCategory = saveProductCategory(categoryJson);
 
@@ -46,7 +139,7 @@ public class ProductService {
     }
   }
 
-  private ProductCategory saveProductCategory(ProductCategoryJsonMapper productCategoryJson) {
+  private ProductCategory saveProductCategory(ProductCategoryJsonFileMapper productCategoryJson) {
     ProductCategory category =
         productCategoryRepository
             .findById(productCategoryJson.getId())
