@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+import sai.ecommerce.exception.BadRequestException;
 import sai.ecommerce.model.product.ProductCategoryResponse;
 import sai.ecommerce.model.product.ProductDetailsResponse;
 import sai.ecommerce.model.product.ProductResponse;
@@ -32,11 +33,31 @@ public class ProductServiceTests {
   }
 
   @Test
+  @DisplayName("getProductById failure test")
+  void testGetProductByIdFailure() {
+    try {
+      productService.getProductById(123);
+    } catch (BadRequestException e) {
+      Assertions.assertEquals("Product not found", e.getMessage());
+    }
+  }
+
+  @Test
   @DisplayName("getProductsByCategory")
   void testGetProductsByCategory() {
     List<ProductResponse> productList = productService.getProductsByCategory(1);
     Assertions.assertTrue(productList.size() > 0);
     Assertions.assertEquals(1, productList.get(0).getCategoryId());
+  }
+
+  @Test
+  @DisplayName("getProductsByCategory failure test")
+  void testGetProductsByCategoryFailure() {
+    try {
+      productService.getProductsByCategory(123);
+    } catch (BadRequestException e) {
+      Assertions.assertEquals("Product category not found", e.getMessage());
+    }
   }
 
   @Test
