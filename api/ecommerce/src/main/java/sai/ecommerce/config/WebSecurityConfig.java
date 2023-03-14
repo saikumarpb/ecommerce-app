@@ -54,7 +54,9 @@ public class WebSecurityConfig {
         .authorizeRequests()
         .antMatchers("/**/auth/**")
         .permitAll()
-        .antMatchers("/**/public/**")
+        .antMatchers("/**/products/**")
+        .permitAll()
+        .antMatchers("/**/product-categories/**")
         .permitAll()
         .anyRequest()
         .authenticated();

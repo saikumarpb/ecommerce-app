@@ -12,8 +12,10 @@ import sai.ecommerce.domain.Product;
 import sai.ecommerce.domain.ProductCategory;
 import sai.ecommerce.exception.BadRequestException;
 import sai.ecommerce.model.mapper.ProductCategoryJsonFileMapper;
-import sai.ecommerce.model.mapper.ProductCategoryJsonMapper;
 import sai.ecommerce.model.mapper.ProductJsonMapper;
+import sai.ecommerce.model.product.ProductCategoryResponse;
+import sai.ecommerce.model.product.ProductDetailsResponse;
+import sai.ecommerce.model.product.ProductResponse;
 import sai.ecommerce.repository.ProductCategoryRepository;
 import sai.ecommerce.repository.ProductRepository;
 import sai.ecommerce.utils.JsonUtils;
@@ -31,93 +33,78 @@ public class ProductService {
   @Value("${load.products-json}")
   private boolean loadProducts;
 
-  public List<ProductJsonMapper> getAllProducts() {
+  public List<ProductResponse> getProducts() {
     List<Product> products = productRepository.findAll();
-    return mapProductsToProductJson(products);
+    return mapProductsToProductResponseList(products);
   }
 
-  public ProductJsonMapper getProductById(int id) {
+  public ProductDetailsResponse getProductById(int id) {
     Product product =
         productRepository
             .findById(id)
             .orElseThrow(() -> new BadRequestException("Product not found"));
 
-    return mapProductToProductJson(product);
+    return mapProductToProductDetails(product);
   }
 
-  public List<ProductJsonMapper> getProductsByCategory(int id) {
+  public List<ProductResponse> getProductsByCategory(int categoryId) {
     ProductCategory productCategory =
         productCategoryRepository
-            .findById(id)
+            .findById(categoryId)
             .orElseThrow(() -> new BadRequestException("Product category not found"));
 
     List<Product> products = productCategory.getProducts();
-    return mapProductsToProductJson(products);
+    return mapProductsToProductResponseList(products);
   }
 
-  public List<ProductCategoryJsonFileMapper> getAllProductsByCategory() {
+  public List<ProductCategoryResponse> getCategories() {
     List<ProductCategory> productCategories = productCategoryRepository.findAll();
-    return mapProductCategoriesToJsonFile(productCategories);
+    return mapProductCategoriesToResponse(productCategories);
   }
 
-  public List<ProductCategoryJsonMapper> getAllCategories() {
-    List<ProductCategory> productCategories = productCategoryRepository.findAll();
-    return mapProductCategoriesToJson(productCategories);
-  }
-
-  private List<ProductJsonMapper> mapProductsToProductJson(List<Product> products) {
-    List<ProductJsonMapper> productsJson = new ArrayList<>();
+  private List<ProductResponse> mapProductsToProductResponseList(List<Product> products) {
+    List<ProductResponse> productsResposeList = new ArrayList<>();
 
     for (Product product : products) {
-      ProductJsonMapper productJson = mapProductToProductJson(product);
-      productsJson.add(productJson);
+      ProductResponse productResponse = mapProductToProductResponse(product);
+      productsResposeList.add(productResponse);
     }
 
-    return productsJson;
+    return productsResposeList;
   }
 
-  private List<ProductCategoryJsonMapper> mapProductCategoriesToJson(
+  private List<ProductCategoryResponse> mapProductCategoriesToResponse(
       List<ProductCategory> productCategories) {
-    List<ProductCategoryJsonMapper> productCategoryJsonList = new ArrayList<>();
+    List<ProductCategoryResponse> productCategoryList = new ArrayList<>();
 
     for (ProductCategory productCategory : productCategories) {
-      ProductCategoryJsonMapper productCategoryJson =
-          new ProductCategoryJsonMapper(
+      ProductCategoryResponse productCategoryResponse =
+          new ProductCategoryResponse(
               productCategory.getId(), productCategory.getName(), productCategory.getDescription());
-      productCategoryJsonList.add(productCategoryJson);
+      productCategoryList.add(productCategoryResponse);
     }
 
-    return productCategoryJsonList;
+    return productCategoryList;
   }
 
-  private List<ProductCategoryJsonFileMapper> mapProductCategoriesToJsonFile(
-      List<ProductCategory> productCategories) {
-    List<ProductCategoryJsonFileMapper> productCategoryJsonList = new ArrayList<>();
-
-    for (ProductCategory productCategory : productCategories) {
-      List<Product> products = productCategory.getProducts();
-
-      ProductCategoryJsonFileMapper productCategoryJson =
-          new ProductCategoryJsonFileMapper(
-              productCategory.getId(),
-              productCategory.getName(),
-              productCategory.getDescription(),
-              mapProductsToProductJson(products));
-
-      productCategoryJsonList.add(productCategoryJson);
-    }
-
-    return productCategoryJsonList;
-  }
-
-  public ProductJsonMapper mapProductToProductJson(Product product) {
-    return new ProductJsonMapper(
+  private ProductDetailsResponse mapProductToProductDetails(Product product) {
+    return new ProductDetailsResponse(
         product.getId(),
         product.getName(),
-        product.getDescription(),
         product.getPrice(),
-        product.getStock(),
-        product.getImage());
+        product.getImage(),
+        product.getCategory().getId(),
+        product.getDescription(),
+        product.getStock());
+  }
+
+  private ProductResponse mapProductToProductResponse(Product product) {
+    return new ProductResponse(
+        product.getId(),
+        product.getName(),
+        product.getPrice(),
+        product.getImage(),
+        product.getCategory().getId());
   }
 
   @PostConstruct

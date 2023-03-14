@@ -1,55 +1,48 @@
 package sai.ecommerce.controller;
 
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import sai.ecommerce.model.ApiResponse;
-import sai.ecommerce.model.mapper.ProductCategoryJsonFileMapper;
-import sai.ecommerce.model.mapper.ProductCategoryJsonMapper;
-import sai.ecommerce.model.mapper.ProductJsonMapper;
+import sai.ecommerce.exception.BadRequestException;
+import sai.ecommerce.model.product.ProductCategoryResponse;
+import sai.ecommerce.model.product.ProductDetailsResponse;
+import sai.ecommerce.model.product.ProductResponse;
 import sai.ecommerce.service.ProductService;
+import sai.ecommerce.utils.TypeChecker;
 
 @RestController
-@RequestMapping("/api/public")
+@RequestMapping("/api")
 @RequiredArgsConstructor(onConstructor = @__({@Autowired}))
 public class ProductController {
   private final ProductService productService;
 
-  String PRODUCT_FETCH_SUCCESS = "Product fetch successful.";
-  String PRODUCT_CATEGORY_FETCH_SUCCESS = "Product category fetch successful.";
-
-  @GetMapping("/products/id/{id}")
-  public ApiResponse<ProductJsonMapper> getProductById(@PathVariable int id) {
-    ProductJsonMapper productJson = productService.getProductById(id);
-    return new ApiResponse(PRODUCT_FETCH_SUCCESS, productJson);
+  @GetMapping("/products/{id}")
+  public ProductDetailsResponse getProductById(@PathVariable String id) {
+    if (!TypeChecker.isInteger(id)) {
+      throw new BadRequestException("Invalid Product ID");
+    }
+    return productService.getProductById(Integer.parseInt(id));
   }
 
-  @GetMapping("/products/all")
-  public ApiResponse<List<ProductJsonMapper>> getAllProducts() {
-    List<ProductJsonMapper> productJson = productService.getAllProducts();
-    return new ApiResponse(PRODUCT_FETCH_SUCCESS, productJson);
+  @GetMapping("/products")
+  public List<ProductResponse> getProducts(@RequestParam Optional<String> categoryId) {
+    if (categoryId.isPresent()) {
+      if (!TypeChecker.isInteger(categoryId.get())) {
+        throw new BadRequestException("Invalid Category ID");
+      }
+      return productService.getProductsByCategory(Integer.parseInt(categoryId.get()));
+    }
+    return productService.getProducts();
   }
 
-  @GetMapping("/products/category/{categoryId}")
-  public ApiResponse<List<ProductJsonMapper>> getProductsByCategory(@PathVariable int categoryId) {
-    List<ProductJsonMapper> productsJson = productService.getProductsByCategory(categoryId);
-    return new ApiResponse(PRODUCT_CATEGORY_FETCH_SUCCESS, productsJson);
-  }
-
-  @GetMapping("/products/category/all")
-  public ApiResponse<List<ProductCategoryJsonFileMapper>> getAllProductsByCategory() {
-    List<ProductCategoryJsonFileMapper> productCategories =
-        productService.getAllProductsByCategory();
-    return new ApiResponse(PRODUCT_FETCH_SUCCESS, productCategories);
-  }
-
-  @GetMapping("/product-category/all")
-  public ApiResponse<List<ProductCategoryJsonMapper>> getAllCategories() {
-    List<ProductCategoryJsonMapper> productCategories = productService.getAllCategories();
-    return new ApiResponse(PRODUCT_CATEGORY_FETCH_SUCCESS, productCategories);
+  @GetMapping("/product-categories")
+  public List<ProductCategoryResponse> getCategories() {
+    return productService.getCategories();
   }
 }
