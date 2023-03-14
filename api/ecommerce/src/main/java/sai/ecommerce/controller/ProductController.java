@@ -14,7 +14,6 @@ import sai.ecommerce.model.product.ProductCategoryResponse;
 import sai.ecommerce.model.product.ProductDetailsResponse;
 import sai.ecommerce.model.product.ProductResponse;
 import sai.ecommerce.service.ProductService;
-import sai.ecommerce.utils.TypeChecker;
 
 @RestController
 @RequestMapping("/api")
@@ -23,20 +22,14 @@ public class ProductController {
   private final ProductService productService;
 
   @GetMapping("/products/{id}")
-  public ProductDetailsResponse getProductById(@PathVariable String id) {
-    if (!TypeChecker.isInteger(id)) {
-      throw new BadRequestException("Invalid Product ID");
-    }
-    return productService.getProductById(Integer.parseInt(id));
+  public ProductDetailsResponse getProductById(@PathVariable int id) throws BadRequestException {
+    return productService.getProductById(id);
   }
 
   @GetMapping("/products")
-  public List<ProductResponse> getProducts(@RequestParam Optional<String> categoryId) {
+  public List<ProductResponse> getProducts(@RequestParam Optional<Integer> categoryId) {
     if (categoryId.isPresent()) {
-      if (!TypeChecker.isInteger(categoryId.get())) {
-        throw new BadRequestException("Invalid Category ID");
-      }
-      return productService.getProductsByCategory(Integer.parseInt(categoryId.get()));
+      return productService.getProductsByCategory(categoryId.get());
     }
     return productService.getProducts();
   }
