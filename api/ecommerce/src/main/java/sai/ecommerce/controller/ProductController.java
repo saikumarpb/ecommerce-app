@@ -21,9 +21,10 @@ import sai.ecommerce.service.ProductService;
 public class ProductController {
   private final ProductService productService;
 
-  @GetMapping("/products/{id}")
-  public ProductDetailsResponse getProductById(@PathVariable int id) throws BadRequestException {
-    return productService.getProductById(id);
+  @GetMapping("/products/{productId}")
+  public ProductDetailsResponse getProductById(@PathVariable int productId)
+      throws BadRequestException {
+    return productService.getProductById(productId);
   }
 
   @GetMapping("/products")

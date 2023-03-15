@@ -62,6 +62,12 @@ public class ProductService {
     return mapProductCategoriesToResponse(productCategories);
   }
 
+  public Product getProduct(int productId) {
+    return productRepository
+        .findById(productId)
+        .orElseThrow(() -> new BadRequestException("Product not found"));
+  }
+
   private List<ProductResponse> mapProductsToProductResponseList(List<Product> products) {
     List<ProductResponse> productsResposeList = new ArrayList<>();
 
@@ -98,7 +104,7 @@ public class ProductService {
         product.getStock());
   }
 
-  private ProductResponse mapProductToProductResponse(Product product) {
+  public ProductResponse mapProductToProductResponse(Product product) {
     return new ProductResponse(
         product.getId(),
         product.getName(),
