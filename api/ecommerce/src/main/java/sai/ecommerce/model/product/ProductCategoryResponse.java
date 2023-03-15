@@ -1,4 +1,4 @@
-package sai.ecommerce.model.mapper;
+package sai.ecommerce.model.product;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,11 +9,8 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ProductJsonMapper {
+public class ProductCategoryResponse {
   private int id;
   private String name;
   private String description;
-  private double price;
-  private int stock;
-  private String image;
 }
