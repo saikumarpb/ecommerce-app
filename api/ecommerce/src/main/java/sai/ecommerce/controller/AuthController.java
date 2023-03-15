@@ -11,7 +11,7 @@ import sai.ecommerce.model.SignupResponse;
 import sai.ecommerce.service.UserService;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 @RequiredArgsConstructor(onConstructor = @__({@Autowired}))
 public class AuthController {
   private final UserService userService;

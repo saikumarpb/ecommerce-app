@@ -15,9 +15,9 @@ import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
+@Entity
 @Table(name = "cart")
 public class Cart extends BaseEntity {
   @Id
