@@ -36,7 +36,6 @@ public class CartItem extends BaseEntity {
   @NotNull @PositiveOrZero private int quantity;
 
   public CartItem(Cart cart, Product product, int quantity) {
-    super();
     this.cart = cart;
     this.product = product;
     this.quantity = quantity;
