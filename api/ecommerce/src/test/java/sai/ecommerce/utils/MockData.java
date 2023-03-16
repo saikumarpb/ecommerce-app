@@ -8,10 +8,10 @@ public class MockData {
   public static String userEmail = "user@test.com";
   public static String userPassword = "testPass@123";
 
-  public static SignupRequest getSignupRequest() {
+  public static SignupRequest getSignupRequest(String email) {
     SignupRequest signupRequest = new SignupRequest();
     signupRequest.setName(userName);
-    signupRequest.setEmail(userEmail);
+    signupRequest.setEmail(email);
     signupRequest.setPassword(userPassword);
     return signupRequest;
   }
