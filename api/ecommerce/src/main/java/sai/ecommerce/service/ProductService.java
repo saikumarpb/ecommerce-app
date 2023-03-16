@@ -1,6 +1,5 @@
 package sai.ecommerce.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import javax.annotation.PostConstruct;
@@ -35,7 +34,7 @@ public class ProductService {
 
   public List<ProductResponse> getProducts() {
     List<Product> products = productRepository.findAll();
-    return mapProductsToProductResponseList(products);
+    return ProductResponse.fromList(products);
   }
 
   public ProductDetailsResponse getProductById(int id) {
@@ -44,7 +43,7 @@ public class ProductService {
             .findById(id)
             .orElseThrow(() -> new BadRequestException("Product not found"));
 
-    return mapProductToProductDetails(product);
+    return ProductDetailsResponse.from(product);
   }
 
   public List<ProductResponse> getProductsByCategory(int categoryId) {
@@ -54,57 +53,18 @@ public class ProductService {
             .orElseThrow(() -> new BadRequestException("Product category not found"));
 
     List<Product> products = productCategory.getProducts();
-    return mapProductsToProductResponseList(products);
+    return ProductResponse.fromList(products);
   }
 
   public List<ProductCategoryResponse> getCategories() {
     List<ProductCategory> productCategories = productCategoryRepository.findAll();
-    return mapProductCategoriesToResponse(productCategories);
+    return ProductCategoryResponse.fromList(productCategories);
   }
 
-  private List<ProductResponse> mapProductsToProductResponseList(List<Product> products) {
-    List<ProductResponse> productsResposeList = new ArrayList<>();
-
-    for (Product product : products) {
-      ProductResponse productResponse = mapProductToProductResponse(product);
-      productsResposeList.add(productResponse);
-    }
-
-    return productsResposeList;
-  }
-
-  private List<ProductCategoryResponse> mapProductCategoriesToResponse(
-      List<ProductCategory> productCategories) {
-    List<ProductCategoryResponse> productCategoryList = new ArrayList<>();
-
-    for (ProductCategory productCategory : productCategories) {
-      ProductCategoryResponse productCategoryResponse =
-          new ProductCategoryResponse(
-              productCategory.getId(), productCategory.getName(), productCategory.getDescription());
-      productCategoryList.add(productCategoryResponse);
-    }
-
-    return productCategoryList;
-  }
-
-  private ProductDetailsResponse mapProductToProductDetails(Product product) {
-    return new ProductDetailsResponse(
-        product.getId(),
-        product.getName(),
-        product.getPrice(),
-        product.getImage(),
-        product.getCategory().getId(),
-        product.getDescription(),
-        product.getStock());
-  }
-
-  private ProductResponse mapProductToProductResponse(Product product) {
-    return new ProductResponse(
-        product.getId(),
-        product.getName(),
-        product.getPrice(),
-        product.getImage(),
-        product.getCategory().getId());
+  public Product getProduct(int productId) {
+    return productRepository
+        .findById(productId)
+        .orElseThrow(() -> new BadRequestException("Product not found"));
   }
 
   @PostConstruct

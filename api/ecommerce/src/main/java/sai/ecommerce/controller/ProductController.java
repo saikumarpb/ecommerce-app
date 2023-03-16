@@ -16,17 +16,18 @@ import sai.ecommerce.model.product.ProductResponse;
 import sai.ecommerce.service.ProductService;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/products")
 @RequiredArgsConstructor(onConstructor = @__({@Autowired}))
 public class ProductController {
   private final ProductService productService;
 
-  @GetMapping("/products/{id}")
-  public ProductDetailsResponse getProductById(@PathVariable int id) throws BadRequestException {
-    return productService.getProductById(id);
+  @GetMapping("/{productId}")
+  public ProductDetailsResponse getProductById(@PathVariable int productId)
+      throws BadRequestException {
+    return productService.getProductById(productId);
   }
 
-  @GetMapping("/products")
+  @GetMapping
   public List<ProductResponse> getProducts(@RequestParam Optional<Integer> categoryId) {
     if (categoryId.isPresent()) {
       return productService.getProductsByCategory(categoryId.get());
@@ -34,7 +35,7 @@ public class ProductController {
     return productService.getProducts();
   }
 
-  @GetMapping("/product-categories")
+  @GetMapping("/categories")
   public List<ProductCategoryResponse> getCategories() {
     return productService.getCategories();
   }

@@ -3,6 +3,7 @@ package sai.ecommerce.model.product;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import sai.ecommerce.domain.Product;
 
 @Getter
 @Setter
@@ -22,5 +23,16 @@ public class ProductDetailsResponse extends ProductResponse {
     super(id, name, price, image, categoryId);
     this.description = description;
     this.stock = stock;
+  }
+
+  public static ProductDetailsResponse from(Product product) {
+    return new ProductDetailsResponse(
+        product.getId(),
+        product.getName(),
+        product.getPrice(),
+        product.getImage(),
+        product.getCategory().getId(),
+        product.getDescription(),
+        product.getStock());
   }
 }
