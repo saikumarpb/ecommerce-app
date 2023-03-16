@@ -45,21 +45,13 @@ public class CartService {
         throw new BadRequestException("Invalid operation");
       }
     } else {
-      CartItem cartItem = existingCartItem.orElseGet(() -> createCartItem(cart, product, quantity));
+      CartItem cartItem = existingCartItem.orElseGet(() -> new CartItem(cart, product, quantity));
       cartItem.setQuantity(quantity);
       cartItemRepository.save(cartItem);
     }
 
     List<CartItem> cartItems = cartRepository.findByUserId(user.getId()).get().getCartItems();
     return CartItemResponse.fromList(cartItems);
-  }
-
-  private CartItem createCartItem(Cart cart, Product product, int quantity) {
-    CartItem newCartItem = new CartItem();
-    newCartItem.setCart(cart);
-    newCartItem.setProduct(product);
-    newCartItem.setQuantity(quantity);
-    return newCartItem;
   }
 
   private void validateQuantity(Product product, int quantity) {

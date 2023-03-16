@@ -10,12 +10,14 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Table(name = "cart_item")
 @Getter
 @Setter
+@NoArgsConstructor
 public class CartItem extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,4 +34,11 @@ public class CartItem extends BaseEntity {
   private Product product;
 
   @NotNull @PositiveOrZero private int quantity;
+
+  public CartItem(Cart cart, Product product, int quantity) {
+    super();
+    this.cart = cart;
+    this.product = product;
+    this.quantity = quantity;
+  }
 }
