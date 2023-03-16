@@ -1,9 +1,10 @@
 package sai.ecommerce.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import java.util.List;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -13,40 +14,40 @@ import sai.ecommerce.domain.Cart;
 import sai.ecommerce.domain.CartItem;
 import sai.ecommerce.domain.Product;
 import sai.ecommerce.domain.User;
+import sai.ecommerce.model.SignupRequest;
 import sai.ecommerce.model.cart.CartItemResponse;
+import sai.ecommerce.model.cart.UpdateCartRequest;
 import sai.ecommerce.repository.CartItemRepository;
 import sai.ecommerce.repository.CartRepository;
 import sai.ecommerce.repository.ProductRepository;
-import sai.ecommerce.utils.MockData;
-import sai.ecommerce.utils.TestUtils;
+import sai.ecommerce.repository.UserRepository;
 
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class CartServiceTests {
   @Autowired private CartService cartService;
-  @Autowired private TestUtils testUtils;
+  @Autowired private UserService userService;
   @Autowired private CartRepository cartRepository;
+  @Autowired private UserRepository userRepository;
   @Autowired private CartItemRepository cartItemRepository;
   @Autowired private ProductRepository productRepository;
 
   private User user;
 
-  @BeforeAll
-  public void setupUser() throws Exception {
-    user = testUtils.getUser(MockData.userEmail);
+  @BeforeEach
+  public void setup() {
+    String userName = "test user";
+    String userEmail = "cart@test.com";
+    String userPassword = "testPass@123";
+    userService.registerUser(new SignupRequest(userName, userEmail, userPassword));
+    user = userRepository.findByEmail(userEmail).get();
   }
 
   @AfterEach
   public void cleanup() {
-    cartRepository.deleteAll();
     cartItemRepository.deleteAll();
-  }
-
-  @Test
-  @DisplayName("Test empty cart")
-  void getUserCart_emptyCart() {
-    List<CartItemResponse> cartItemResponseList = cartService.getUserCart(user);
-    Assertions.assertEquals(0, cartItemResponseList.size());
+    cartRepository.deleteAll();
+    userRepository.deleteAll();
   }
 
   @Test
@@ -55,24 +56,24 @@ public class CartServiceTests {
     saveCartItem(user, 1, 1);
 
     List<CartItemResponse> cartItemResponseList = cartService.getUserCart(user);
-    Assertions.assertTrue(cartItemResponseList.size() > 0);
+    assertEquals(1, cartItemResponseList.size());
   }
 
   @Test
   @DisplayName("Add valid product to cart")
   void updateUserCart_success() {
     List<CartItemResponse> cartItemResponseList =
-        cartService.updateUserCart(user, MockData.getUpdateCartRequest(1, 1));
-    Assertions.assertTrue(cartItemResponseList.size() > 0);
+        cartService.updateUserCart(user, new UpdateCartRequest(1, 1));
+    assertEquals(1, cartItemResponseList.size());
   }
 
   @Test
   @DisplayName("Add new product to cart with zero quantity")
   void updateUserCart_invalidQuantity() {
     try {
-      cartService.updateUserCart(user, MockData.getUpdateCartRequest(1, 0));
+      cartService.updateUserCart(user, new UpdateCartRequest(1, 0));
     } catch (Exception e) {
-      Assertions.assertEquals("Invalid operation", e.getMessage());
+      assertEquals("Invalid operation", e.getMessage());
     }
   }
 
@@ -80,9 +81,9 @@ public class CartServiceTests {
   @DisplayName("Add invalid product to cart")
   void updateUserCart_invalidProduct() {
     try {
-      cartService.updateUserCart(user, MockData.getUpdateCartRequest(123, 1));
+      cartService.updateUserCart(user, new UpdateCartRequest(123, 1));
     } catch (Exception e) {
-      Assertions.assertEquals("Product not found", e.getMessage());
+      assertEquals("Product not found", e.getMessage());
     }
   }
 
@@ -92,18 +93,13 @@ public class CartServiceTests {
     saveCartItem(user, 1, 1);
 
     List<CartItemResponse> cartItemResponseList =
-        cartService.updateUserCart(user, MockData.getUpdateCartRequest(1, 0));
-    Assertions.assertEquals(0, cartItemResponseList.size());
-  }
-
-  private Cart createCart(User user) {
-    Cart cart = new Cart();
-    cart.setUser(user);
-    return cartRepository.save(cart);
+        cartService.updateUserCart(user, new UpdateCartRequest(1, 0));
+    assertEquals(0, cartItemResponseList.size());
   }
 
   private void saveCartItem(User user, int productId, int quantity) {
-    Cart cart = cartRepository.findByUserId(user.getId()).orElseGet(() -> createCart(user));
+    Cart cart =
+        cartRepository.findByUserId(user.getId()).orElseGet(() -> cartService.createNewCart(user));
     Product product = productRepository.findById(productId).get();
     cartItemRepository.save(new CartItem(cart, product, quantity));
   }

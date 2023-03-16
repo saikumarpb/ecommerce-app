@@ -62,7 +62,7 @@ public class CartService {
     }
   }
 
-  private Cart createNewCart(User user) {
+  public Cart createNewCart(User user) {
     Cart newCart = new Cart();
     newCart.setUser(user);
     return cartRepository.save(newCart);
