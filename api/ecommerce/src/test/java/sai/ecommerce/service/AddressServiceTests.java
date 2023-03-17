@@ -113,6 +113,25 @@ public class AddressServiceTests {
     }
   }
 
+  @Test
+  @DisplayName("Delete address")
+  void deleteAddress_success() {
+    addressService.deleteAddress(user1, address1.getId());
+    List<Address> addressList = addressRepository.findByUserId(address1.getId());
+    assertEquals(0, addressList.size());
+  }
+
+  @Test
+  @DisplayName("Delete unauthorized address")
+  void deleteAddress_unauthorizedUser() {
+    try {
+      // user2 tries to delete user1's address
+      addressService.deleteAddress(user2, address1.getId());
+    } catch (Exception e) {
+      assertEquals("User is not authorized to access this address", e.getMessage());
+    }
+  }
+
   private AddressRequest getMockAddressRequest(int stateId, String pincode) {
     return new AddressRequest(
         Address.AddressType.HOME,
