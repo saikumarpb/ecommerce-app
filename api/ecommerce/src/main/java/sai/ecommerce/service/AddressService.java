@@ -82,13 +82,14 @@ public class AddressService {
         addressRepository
             .findById(addressId)
             .orElseThrow(() -> new NotFoundException("Address not found"));
+
     if (user.getId() != address.getUser().getId()) {
       throw new UnauthorizedException("User is not authorized to access this address");
     }
     return address;
   }
 
-  public List<CountriesAndStatesResponse> getCountriesAndStatesList() {
+  public List<CountriesAndStatesResponse> getCountryAndStateList() {
     List<Country> countryList = countryRepository.findAll();
     return CountriesAndStatesResponse.fromList(countryList);
   }

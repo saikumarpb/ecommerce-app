@@ -14,7 +14,7 @@ public class CountryController {
   private final AddressService addressService;
 
   @GetMapping("/countries-and-states")
-  public List<CountriesAndStatesResponse> getCountriesAndStatesList() {
-    return addressService.getCountriesAndStatesList();
+  public List<CountriesAndStatesResponse> getCountryAndStateList() {
+    return addressService.getCountryAndStateList();
   }
 }
