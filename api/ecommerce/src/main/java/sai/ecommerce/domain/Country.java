@@ -1,5 +1,6 @@
 package sai.ecommerce.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -21,5 +22,6 @@ public class Country extends BaseEntity {
   @NotBlank private String name;
 
   @OneToMany(mappedBy = "country", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JsonIgnore
   private List<State> states;
 }
