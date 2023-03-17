@@ -1,7 +1,7 @@
 package sai.ecommerce.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -20,8 +20,9 @@ public class State extends BaseEntity {
 
   @NotBlank private String name;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne
   @JoinColumn(name = "country_id")
   @NotNull
+  @JsonIgnore
   private Country country;
 }

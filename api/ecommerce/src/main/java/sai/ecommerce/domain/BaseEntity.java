@@ -1,5 +1,6 @@
 package sai.ecommerce.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
@@ -14,9 +15,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 public class BaseEntity {
   @Column(name = "created_at", nullable = false)
   @CreationTimestamp
+  @JsonIgnore
   private LocalDateTime createdAt;
 
   @Column(name = "updated_at", nullable = false)
   @UpdateTimestamp
+  @JsonIgnore
   private LocalDateTime updatedAt;
 }

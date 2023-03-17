@@ -58,6 +58,8 @@ public class WebSecurityConfig {
         .permitAll()
         .antMatchers("/**/products/**")
         .permitAll()
+        .antMatchers("/**/countries-and-states")
+        .permitAll()
         .anyRequest()
         .authenticated();
 
