@@ -12,6 +12,7 @@ import sai.ecommerce.domain.OrderItem;
 import sai.ecommerce.domain.Product;
 import sai.ecommerce.domain.User;
 import sai.ecommerce.exception.BadRequestException;
+import sai.ecommerce.model.order.OrderRequest;
 import sai.ecommerce.model.order.OrderResponse;
 import sai.ecommerce.repository.CartRepository;
 import sai.ecommerce.repository.OrderItemRepository;
@@ -35,8 +36,8 @@ public class OrderService {
     return OrderResponse.fromList(orderList);
   }
 
-  public OrderResponse placeOrder(User user, int addressId) {
-    Address address = addressService.validateUserAndGetAddress(user, addressId);
+  public OrderResponse createOrder(User user, OrderRequest orderRequest) {
+    Address address = addressService.validateUserAndGetAddress(user, orderRequest.getAddressId());
 
     Cart cart =
         cartRepository
@@ -57,11 +58,14 @@ public class OrderService {
     for (CartItem cartItem : cartItemList) {
       Product product = cartItem.getProduct();
       int quantity = cartItem.getQuantity();
+
       OrderItem orderItem = createOrderItem(order, product, quantity);
       orderItemList.add(orderItemRepository.save(orderItem));
+
       product.setStock(product.getStock() - quantity);
       productRepository.save(product);
     }
+
     cartRepository.deleteById(cart.getId());
     order.setOrderItems(orderItemList);
     return OrderResponse.from(order);
@@ -79,6 +83,7 @@ public class OrderService {
   private double calculateItemTotal(CartItem cartItem) {
     Product product = cartItem.getProduct();
     int quantity = cartItem.getQuantity();
+
     cartService.validateQuantity(product, quantity);
     return product.getPrice() * quantity;
   }

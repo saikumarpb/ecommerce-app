@@ -1,16 +1,18 @@
 package sai.ecommerce.controller;
 
 import java.util.List;
+import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import sai.ecommerce.domain.User;
+import sai.ecommerce.model.order.OrderRequest;
 import sai.ecommerce.model.order.OrderResponse;
 import sai.ecommerce.service.OrderService;
 
@@ -26,8 +28,9 @@ public class OrderController {
     return orderService.getOrderList(user);
   }
 
-  @PostMapping("/address/{addressId}")
-  public OrderResponse placeOrder(@AuthenticationPrincipal User user, @PathVariable int addressId) {
-    return orderService.placeOrder(user, addressId);
+  @PostMapping
+  public OrderResponse createOrder(
+      @AuthenticationPrincipal User user, @Valid @RequestBody OrderRequest orderRequest) {
+    return orderService.createOrder(user, orderRequest);
   }
 }
