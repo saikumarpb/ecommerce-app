@@ -54,11 +54,13 @@ public class CartService {
     return CartItemResponse.fromList(cartItems);
   }
 
-  private void validateQuantity(Product product, int quantity) {
+  public void validateQuantity(Product product, int quantity) {
     int availableQuantity = product.getStock();
     if (quantity > availableQuantity) {
       throw new BadRequestException(
-          String.format("Quantity exceeded, Available items in stock : %s", availableQuantity));
+          String.format(
+              "Quantity exceeded, Available %s in stock : %s",
+              product.getName(), availableQuantity));
     }
   }
 
