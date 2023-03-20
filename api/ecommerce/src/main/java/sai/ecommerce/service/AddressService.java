@@ -77,7 +77,7 @@ public class AddressService {
     addressRepository.delete(address);
   }
 
-  private Address validateUserAndGetAddress(User user, int addressId) {
+  public Address validateUserAndGetAddress(User user, int addressId) {
     Address address =
         addressRepository
             .findById(addressId)

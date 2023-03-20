@@ -6,6 +6,4 @@ import sai.ecommerce.domain.CartItem;
 
 public interface CartItemRepository extends JpaRepository<CartItem, Integer> {
   Optional<CartItem> findByCartIdAndProductId(int cartId, int productId);
-
-  Optional<CartItem> deleteById(int id);
 }
