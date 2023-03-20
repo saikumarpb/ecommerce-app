@@ -1,10 +1,10 @@
 import React from 'react';
-import './App.css';
+import Header from "./components/Navbar";
 
 function App() {
   return (
     <div className="App">
-      Sai Kumar
+      <Header />
     </div>
   );
 }
