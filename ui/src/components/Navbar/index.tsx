@@ -7,6 +7,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
 function Header() {
+  // TODO : Update with setIsLoggedIn
   const [isLoggedin] = useState(false);
 
   const logoutHandler = () => {
@@ -18,6 +19,10 @@ function Header() {
   };
 
   const loginHandler = () => {
+    alert("Feature not implemented");
+  };
+
+  const featureNotImplemented = () => {
     alert("Feature not implemented");
   };
 
@@ -53,7 +58,7 @@ function Header() {
   );
 
   return (
-    <Navbar bg="light" expand="lg" fixed="top">
+    <Navbar bg="light" expand="lg" sticky="top">
       <Container>
         <Navbar.Brand href="/" className="d-flex gap-2">
           <ShoppingIcon width="30px" height="30px" className="shopping-icon" />
@@ -70,12 +75,12 @@ function Header() {
                 Products
               </Nav.Link>
             </Nav.Item>
-            <Nav.Item>
+            <Nav.Item onClick={featureNotImplemented}>
               <Nav.Link href="#link" eventKey="cart">
                 Cart
               </Nav.Link>
             </Nav.Item>
-            <Nav.Item>
+            <Nav.Item onClick={featureNotImplemented}>
               <Nav.Link href="#link" eventKey="orders">
                 Orders
               </Nav.Link>
