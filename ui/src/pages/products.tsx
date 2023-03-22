@@ -3,6 +3,7 @@ import { Button, Card, Placeholder } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAsyncProducts } from '../store/actions/product';
 import { AppDispatch, RootState } from '../store';
+import { Slide, toast } from 'react-toastify';
 
 function Products() {
   const dispatch = useDispatch<AppDispatch>();
@@ -10,14 +11,28 @@ function Products() {
   useEffect(() => {
     dispatch(fetchAsyncProducts());
   }, [dispatch]);
+
   const productSlice = useSelector((store: RootState) => store.products);
 
+  useEffect(() => {
+    productSlice.error &&
+      showErrorToast('Something went wrong, Please try again.', 'ApiError');
+  }, [productSlice]);
+
   const handleAddToCart = () => {
-    alert('Feature not implemented.');
+    showErrorToast('Feature not implemented.', 'products');
   };
 
   const handleCardClick = () => {
-    alert('Feature not implemented.');
+    showErrorToast('Feature not implemented.', 'products');
+  };
+
+  const showErrorToast = (message: string, toastId: string) => {
+    toast.error(message, {
+      position: toast.POSITION.TOP_RIGHT,
+      transition: Slide,
+      toastId,
+    });
   };
 
   const renderPlaceHolderCards = (numberOfCards: number) => {
@@ -64,8 +79,7 @@ function Products() {
 
   return (
     <div className="p-4 d-flex flex-wrap justify-content-center">
-      {/* TODO : Add error case handling.*/}
-      {productSlice.loading ? renderPlaceHolderCards(10) : renderProducts()}
+      {productSlice.loading ? renderPlaceHolderCards(20) : renderProducts()}
     </div>
   );
 }
