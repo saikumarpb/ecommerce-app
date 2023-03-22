@@ -1,29 +1,29 @@
-import React, { Fragment, useState } from "react";
-import "./styles.css";
-import { ReactComponent as ShoppingIcon } from "../../assets/icons/shopping.svg";
-import { Button, ButtonGroup } from "react-bootstrap";
-import Container from "react-bootstrap/Container";
-import Nav from "react-bootstrap/Nav";
-import Navbar from "react-bootstrap/Navbar";
+import React, { Fragment, useState } from 'react';
+import './styles.css';
+import { ReactComponent as ShoppingIcon } from '../../assets/icons/shopping.svg';
+import { Button, ButtonGroup } from 'react-bootstrap';
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
 
 function Header() {
   // TODO : Update with setIsLoggedIn
   const [isLoggedin] = useState(false);
 
   const logoutHandler = () => {
-    alert("Feature not implemented");
+    alert('Feature not implemented');
   };
 
   const signupHandler = () => {
-    alert("Feature not implemented");
+    alert('Feature not implemented');
   };
 
   const loginHandler = () => {
-    alert("Feature not implemented");
+    alert('Feature not implemented');
   };
 
   const featureNotImplemented = () => {
-    alert("Feature not implemented");
+    alert('Feature not implemented');
   };
 
   const UserAuthSection = () => (

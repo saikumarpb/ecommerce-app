@@ -1,9 +1,11 @@
-import axios from "axios";
-import { Product } from "../types";
+import { createAsyncThunk } from '@reduxjs/toolkit';
+import api from '.';
+import { Product } from '../types';
 
-// TODO : move to axios setup file
-axios.defaults.baseURL = "http://127.0.0.1:8080";
-
-export async function getProducts() {
-  return await axios.get<Product[]>("/api/products");
-}
+export const fetchAsyncProducts = createAsyncThunk(
+  'products/fetchAsyncProducts',
+  async () => {
+    const response = await api.get<Product[]>('/products');
+    return response.data;
+  }
+);
