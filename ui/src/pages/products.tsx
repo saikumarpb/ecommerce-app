@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Button, Card, Placeholder } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchAsyncProducts } from '../api/ProductService';
+import { fetchAsyncProducts } from '../store/actions/product';
 import { AppDispatch, RootState } from '../store';
 
 function Products() {
@@ -64,6 +64,7 @@ function Products() {
 
   return (
     <div className="p-4 d-flex flex-wrap justify-content-center">
+      {/* TODO : Add error case handling.*/}
       {productSlice.loading ? renderPlaceHolderCards(10) : renderProducts()}
     </div>
   );

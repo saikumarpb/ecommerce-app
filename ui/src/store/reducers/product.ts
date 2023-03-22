@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { IProductSlice } from '../types';
-import { fetchAsyncProducts } from '../../api/ProductService';
+import { fetchAsyncProducts } from '../actions/product';
 
 const initialState: IProductSlice = {
   products: [],
