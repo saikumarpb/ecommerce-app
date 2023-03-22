@@ -1,0 +1,10 @@
+.navbar {
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  padding: 20px !important;
+}
+
+.navbar-brand {
+  font-style: italic;
+  font-weight: 600;
+  font-size: larger;
+}
