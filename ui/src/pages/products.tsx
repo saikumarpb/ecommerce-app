@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react';
-import { Button, Card, Placeholder } from 'react-bootstrap';
+import { Alert, Button, Card, Placeholder } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAsyncProducts } from '../store/actions/product';
 import { AppDispatch, RootState } from '../store';
+import { showErrorToast } from '../utils/toast';
 
 function Products() {
   const dispatch = useDispatch<AppDispatch>();
@@ -10,14 +11,15 @@ function Products() {
   useEffect(() => {
     dispatch(fetchAsyncProducts());
   }, [dispatch]);
+
   const productSlice = useSelector((store: RootState) => store.products);
 
   const handleAddToCart = () => {
-    alert('Feature not implemented.');
+    showErrorToast('Feature not implemented.', 'products');
   };
 
   const handleCardClick = () => {
-    alert('Feature not implemented.');
+    showErrorToast('Feature not implemented.', 'products');
   };
 
   const renderPlaceHolderCards = (numberOfCards: number) => {
@@ -44,28 +46,38 @@ function Products() {
   };
 
   const renderProducts = () => {
-    return productSlice.products.map((product) => (
-      <div className="p-2" key={product.id}>
-        <Card style={{ width: '18rem' }}>
-          <Card.Img variant="top" src={product.image} />
-          <Card.Body>
-            <Card.Title>{product.name}</Card.Title>
-            <div className="d-flex align-items-center justify-content-between">
-              <Card.Text className="mb-0">₹ {product.price}</Card.Text>
-              <Button variant="outline-primary" onClick={handleAddToCart}>
-                Add to cart
-              </Button>
-            </div>
-          </Card.Body>
-        </Card>
-      </div>
-    ));
+    return productSlice.error
+      ? renderErrorScreen()
+      : productSlice.products.map((product) => (
+          <div className="p-2" key={product.id}>
+            <Card style={{ width: '18rem' }}>
+              <Card.Img variant="top" src={product.image} />
+              <Card.Body>
+                <Card.Title>{product.name}</Card.Title>
+                <div className="d-flex align-items-center justify-content-between">
+                  <Card.Text className="mb-0">₹ {product.price}</Card.Text>
+                  <Button variant="outline-primary" onClick={handleAddToCart}>
+                    Add to cart
+                  </Button>
+                </div>
+              </Card.Body>
+            </Card>
+          </div>
+        ));
+  };
+
+  const renderErrorScreen = () => {
+    return (
+      <Alert variant="danger">
+        <Alert.Heading>Oh snap! We are down!</Alert.Heading>
+        <p>Our best minds are working on this, Please try after some time</p>
+      </Alert>
+    );
   };
 
   return (
     <div className="p-4 d-flex flex-wrap justify-content-center">
-      {/* TODO : Add error case handling.*/}
-      {productSlice.loading ? renderPlaceHolderCards(10) : renderProducts()}
+      {productSlice.loading ? renderPlaceHolderCards(20) : renderProducts()}
     </div>
   );
 }

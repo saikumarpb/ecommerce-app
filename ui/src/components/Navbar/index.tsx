@@ -1,29 +1,29 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment } from 'react';
 import './styles.css';
 import { ReactComponent as ShoppingIcon } from '../../assets/icons/shopping.svg';
 import { Button, ButtonGroup } from 'react-bootstrap';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { AppDispatch, RootState } from '../../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout } from '../../store/reducers/auth';
 
-function Header() {
-  // TODO : Update with setIsLoggedIn
-  const [isLoggedin] = useState(false);
-
-  const logoutHandler = () => {
-    alert('Feature not implemented');
-  };
-
-  const signupHandler = () => {
-    alert('Feature not implemented');
-  };
-
-  const loginHandler = () => {
-    alert('Feature not implemented');
-  };
+interface HeaderProps {
+  signupHandler: () => void;
+  loginHandler: () => void;
+}
+function Header({ signupHandler, loginHandler }: HeaderProps) {
+  const isLoggedin = useSelector((store: RootState) => store.auth.isLoggedin);
+  const dispatch = useDispatch<AppDispatch>();
 
   const featureNotImplemented = () => {
     alert('Feature not implemented');
+  };
+
+  const logoutHandler = () => {
+    localStorage.removeItem('token');
+    dispatch(logout());
   };
 
   const UserAuthSection = () => (

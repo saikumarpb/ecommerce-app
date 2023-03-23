@@ -5,3 +5,10 @@ export interface IProductSlice {
   loading: boolean;
   error: string;
 }
+
+export interface IAuthSlice {
+  token: string;
+  email: string;
+  isLoggedin: boolean;
+  error: string;
+}
